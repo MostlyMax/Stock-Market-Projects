@@ -15,7 +15,7 @@ try: # Tries to initialize tda client
         webdriver_func=webdriver.Chrome())
 
 except Exception as exc: # Gets new token if previous token is expired
-    client = client_from_login_flow(webdriver.Chrome, api_key=client_id,
+    client = client_from_login_flow(webdriver.Chrome(), api_key=client_id,
                            redirect_url=redirect_url,
                            token_path='resources/token.txt',
                            redirect_wait_time_seconds=0.1,
@@ -24,13 +24,21 @@ except Exception as exc: # Gets new token if previous token is expired
                            token_write_func=None)
     traceback.print_exc(exc)
 
-stream_client = StreamClient(client, account_id=int(my_account_id))
+
+def get_price_history(symbol, start, end, resolution):
+    r = client.get_price_history(symbol,
+                                 frequency_type=resolution,
+                                 frequency=1,
+                                 start_datetime=start,
+                                 end_datetime=end,
+                                 need_extended_hours_data=False)
+    assert r.status_code == httpx.codes.OK, r.raise_for_status()
+    return pd.DataFrame(r.json())
 
 
 def get_option_chain(symbol):
     r = client.get_option_chain(symbol=symbol)
     assert r.status_code == httpx.codes.OK, r.raise_for_status()
-
     return pd.DataFrame(r.json())
 
 

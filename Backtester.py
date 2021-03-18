@@ -1,4 +1,4 @@
-from tda import utils
+from ClientTDA import get_price_history
 
 class Bar:
     def __init__(self, High, Low, Open, Close):
@@ -31,12 +31,24 @@ class Portfolio:
 class Backtester:
     def __init__(self):
         self.CurrentDatetime = 0
+        self.CurrentTick = 0
         self.CurrentData = {}
+        self.Data = None
 
     def PlaceMarketOrder(self, symbol, volume):
         currentData = self.CurrentData.get(symbol)
         price = currentData.Close
         Portfolio.buyEquity(symbol, price, volume)
+
+    def GetNextTick(self):
+        pass
+
+    def GetData(self, symbol, start, end, resolution):
+        self.Data = get_price_history(symbol, start, end, resolution)
+
+    def ProcessData(self):
+        pass
+
 
 
 
