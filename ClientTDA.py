@@ -2,7 +2,7 @@ import traceback
 import httpx
 from tda.auth import easy_client
 from tda.auth import client_from_login_flow
-from Resources.config import client_id, redirect_url, my_account_id
+from Resources.config import client_id, redirect_url
 from selenium import webdriver
 import pandas as pd
 
@@ -12,7 +12,7 @@ try: # Tries to initialize tda client
         api_key=client_id,
         redirect_uri=redirect_url,
         token_path='resources/token.txt',
-        webdriver_func=webdriver.Chrome())
+        webdriver_func=webdriver.Chrome)
 
 except Exception as exc: # Gets new token if previous token is expired
     client = client_from_login_flow(webdriver.Chrome(), api_key=client_id,
@@ -25,10 +25,11 @@ except Exception as exc: # Gets new token if previous token is expired
     traceback.print_exc(exc)
 
 
-def get_price_history(symbol, start, end, resolution):
+def get_price_history(symbol, start, end, frequencyType, periodType, frequency):
     r = client.get_price_history(symbol,
-                                 frequency_type=resolution,
-                                 frequency=1,
+                                 period_type=periodType,
+                                 frequency=frequency,
+                                 frequency_type=frequencyType,
                                  start_datetime=start,
                                  end_datetime=end,
                                  need_extended_hours_data=False)

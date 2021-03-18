@@ -1,31 +1,16 @@
+from BacktestSettings import Portfolio
+from Test import Test
 from ClientTDA import get_price_history
+from datetime import datetime
 
-class Bar:
-    def __init__(self, High, Low, Open, Close):
+
+class Candle:
+    def __init__(self, High, Low, Open, Close, Datetime):
         self.High = High
         self.Low = Low
         self.Open = Open
         self.Close = Close
-
-
-class Portfolio:
-
-    def __init__(self):
-        self.Portfolio = self
-        self.CashAmount = 10000
-        self.Invested = False
-        self.EquityInvested = []
-
-    def SetCashAmount(self, amount):
-        self.CashAmount = amount
-
-    def buyEquity(self, symbol, price, volume):
-        self.EquityInvested.append(symbol, price, volume)
-        self.Invested = True
-        if self.CashAmount - price * volume < 0:
-            raise Exception("Low Balance")
-        else:
-            self.CashAmount -= price * volume
+        self.Datetime = Datetime
 
 
 class Backtester:
@@ -33,6 +18,7 @@ class Backtester:
         self.CurrentDatetime = 0
         self.CurrentTick = 0
         self.CurrentData = {}
+        self.CurrentCandle = None
         self.Data = None
 
     def PlaceMarketOrder(self, symbol, volume):
@@ -41,13 +27,30 @@ class Backtester:
         Portfolio.buyEquity(symbol, price, volume)
 
     def GetNextTick(self):
-        pass
+        self.CurrentData = self.Data.iat[self.CurrentTick][0]
+        self.CurrentTick += 1
 
     def GetData(self, symbol, start, end, resolution):
-        self.Data = get_price_history(symbol, start, end, resolution)
+        self.Data = get_price_history(symbol=symbol, start=start, end=end,
+                                      frequencyType=resolution["FrequencyType"],
+                                      periodType=resolution["PeriodType"],
+                                      frequency=resolution["Frequency"])
 
     def ProcessData(self):
-        pass
+        self.CurrentCandle = Candle(High=self.CurrentData.get('high'),
+                                    Low=self.CurrentData.get('low'),
+                                    Open=self.CurrentData.get('open'),
+                                    Close=self.CurrentData.get('close'),
+                                    Datetime=datetime.fromtimestamp(self.CurrentData.get('datetime'))/1000)
+
+    def Run(self):
+        while self.CurrentTick < len(self.Data.index):
+            self.GetNextTick()
+            self.ProcessData()
+            Test.onData(self.CurrentCandle)
+
+
+
 
 
 

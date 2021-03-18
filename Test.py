@@ -1,19 +1,19 @@
-from Algorithm import *
+from BacktestSettings import *
 
 
-class Test(Algorithm):
-    # def __init__(self):
-    #     super().__init__()
+class Test(BacktestSettings):
 
     def initialize(self):
         self.SetCashAmount(10)
-        self.SetStartDate(3, 2, 2012)
-        self.AddEquity("AAPL", Resolution.Hour)
+        self.SetStartDate(2, 21, 2021)
+        self.SetEndDate(3, 17, 2021)
+        self.AddEquity("AAPL", Resolution.Day)
         Debug(self.Portfolio.Invested)
 
-    def onData(self, data):
-        if not self.Portfolio.Invested:
-            self.PlaceMarketOrder("AAPL", 10)
+    def onData(self, candle):
+        Debug(candle)
+        # if not self.Portfolio.Invested:
+        #     self.PlaceMarketOrder("AAPL", 10)
         pass
 
 

@@ -1,21 +1,29 @@
-from BacktestSystem import *
+from BacktestSettings import *
+from Portfolio import *
 from Backtester import *
+from Test import *
 
 
-def Debug(*args):
-    for x in args:
-        print(x)
-
-
-class Algorithm(Backtester, BacktestSystem, Portfolio):
+class Algorithm:
     def __init__(self):
-        Backtester.__init__(self)
-        BacktestSystem.__init__(self)
-        Portfolio.__init__(self)
+        self.Portfolio = Portfolio()
+        self.Settings = BacktestSettings(self.Portfolio)
 
-    def run(self):
-        for symbol in self.EquityList:
-            self.GetData(symbol[0], self.startDate, self.endDate, symbol[1])
-            Debug(self.Data)
+    def runAll(self):
+        for equity in self.EquityList:
+            backtest = Backtester()
+
+            backtest.GetData(symbol=equity["Symbol"],
+                             start=self.startDate, end=self.endDate,
+                             resolution=equity["Resolution"])
+
+            backtest.Run()
+
+
+if __name__ == '__main__':
+    algorithm = Algorithm()
+    Test.initialize(algorithm.Settings)
+
+    algorithm.runAll()
 
 
