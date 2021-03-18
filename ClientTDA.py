@@ -2,7 +2,7 @@ import traceback
 import httpx
 from tda.auth import easy_client
 from tda.auth import client_from_login_flow
-from config import client_id, redirect_url, my_account_id
+from Resources.config import client_id, redirect_url, my_account_id
 from selenium import webdriver
 import pandas as pd
 
