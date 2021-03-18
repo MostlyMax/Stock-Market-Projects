@@ -1,10 +1,14 @@
 from datetime import datetime
 from tda.client import Client
+from pprint import pprint
 
 
 def Debug(*args):
     for x in args:
-        print(x)
+        try:
+            pprint(vars(x))
+        except:
+            pprint(x)
 
 
 class Resolution:

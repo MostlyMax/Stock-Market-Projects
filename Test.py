@@ -1,4 +1,5 @@
 from BacktestSettings import *
+from Backtester import *
 
 
 class Test(BacktestSettings):
@@ -8,12 +9,11 @@ class Test(BacktestSettings):
         self.SetStartDate(2, 21, 2021)
         self.SetEndDate(3, 17, 2021)
         self.AddEquity("AAPL", Resolution.Day)
-        Debug(self.Portfolio.Invested)
 
     def onData(self, candle):
-        Debug(candle)
-        # if not self.Portfolio.Invested:
-        #     self.PlaceMarketOrder("AAPL", 10)
+        # Debug(candle)
+        if not self.Portfolio.Invested:
+            self.PlaceMarketOrder("AAPL", 10)
         pass
 
 

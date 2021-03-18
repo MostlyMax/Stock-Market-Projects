@@ -1,5 +1,3 @@
-from BacktestSettings import Portfolio
-from Test import Test
 from ClientTDA import get_price_history
 from datetime import datetime
 
@@ -14,20 +12,21 @@ class Candle:
 
 
 class Backtester:
-    def __init__(self):
+    def __init__(self, Portfolio):
         self.CurrentDatetime = 0
         self.CurrentTick = 0
         self.CurrentData = {}
         self.CurrentCandle = None
         self.Data = None
+        self.Portfolio = Portfolio
 
     def PlaceMarketOrder(self, symbol, volume):
         currentData = self.CurrentData.get(symbol)
         price = currentData.Close
-        Portfolio.buyEquity(symbol, price, volume)
+        self.Portfolio.buyEquity(symbol, price, volume)
 
     def GetNextTick(self):
-        self.CurrentData = self.Data.iat[self.CurrentTick][0]
+        self.CurrentData = self.Data.iat[self.CurrentTick, 0]
         self.CurrentTick += 1
 
     def GetData(self, symbol, start, end, resolution):
@@ -41,13 +40,11 @@ class Backtester:
                                     Low=self.CurrentData.get('low'),
                                     Open=self.CurrentData.get('open'),
                                     Close=self.CurrentData.get('close'),
-                                    Datetime=datetime.fromtimestamp(self.CurrentData.get('datetime'))/1000)
+                                    Datetime=datetime.fromtimestamp(self.CurrentData.get('datetime')/1000))
 
-    def Run(self):
-        while self.CurrentTick < len(self.Data.index):
-            self.GetNextTick()
-            self.ProcessData()
-            Test.onData(self.CurrentCandle)
+    def Update(self):
+        self.GetNextTick()
+        self.ProcessData()
 
 
 
