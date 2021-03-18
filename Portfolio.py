@@ -6,7 +6,7 @@ class Portfolio:
         self.EquityInvested = []
 
     def buyEquity(self, symbol, price, volume):
-        self.EquityInvested.append(symbol, price, volume)
+        self.EquityInvested.append({"Symbol": symbol, "Price": price, "Volume": volume})
         self.Invested = True
         if self.CashAmount - price * volume < 0:
             raise Exception("Low Balance")

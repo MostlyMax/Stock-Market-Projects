@@ -1,8 +1,7 @@
-from BacktestSettings import *
 from Backtester import *
 
 
-class Test(BacktestSettings):
+class Test(Backtester):
 
     def initialize(self):
         self.SetCashAmount(10)
@@ -14,7 +13,7 @@ class Test(BacktestSettings):
         # Debug(candle)
         if not self.Portfolio.Invested:
             self.PlaceMarketOrder("AAPL", 10)
-        pass
+            Debug(self.Portfolio)
 
 
 

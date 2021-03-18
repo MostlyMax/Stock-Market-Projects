@@ -22,7 +22,7 @@ class Algorithm:
     def Run(self, backtest):
         while backtest.CurrentTick < len(backtest.Data.index):
             backtest.Update()
-            Test.onData(self.Settings, backtest.CurrentCandle)
+            Test.onData(backtest, backtest.CurrentCandle)
 
 
 if __name__ == '__main__':
