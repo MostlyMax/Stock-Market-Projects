@@ -2,22 +2,19 @@ from BacktestSettings import *
 from Portfolio import *
 from Backtester import *
 from Test import *
+import pandas as pd
 
 
 class Algorithm:
     def __init__(self):
         self.Portfolio = Portfolio()
-        self.Settings = BacktestSettings(self.Portfolio)
+        self.Backtest = Backtester(self.Portfolio)
 
     def RunAll(self):
-        for equity in self.Settings.EquityList:
-            backtest = Backtester(self.Portfolio)
-
-            backtest.GetData(symbol=equity["Symbol"],
-                             start=self.Settings.startDate,
-                             end=self.Settings.endDate,
-                             resolution=equity["Resolution"])
-            self.Run(backtest)
+        self.Backtest.GetData(symbols=self.Backtest.EquityList,
+                              start=self.Backtest.startDate,
+                              end=self.Backtest.endDate)
+        self.Run(self.Backtest)
 
     def Run(self, backtest):
         while backtest.CurrentTick < len(backtest.Data.index):
@@ -27,8 +24,6 @@ class Algorithm:
 
 if __name__ == '__main__':
     algorithm = Algorithm()
-    Test.initialize(algorithm.Settings)
+    Test.initialize(algorithm.Backtest)
 
     algorithm.RunAll()
-
-

@@ -28,6 +28,7 @@ class Resolution:
 class BacktestSettings:
 
     def __init__(self, Portfolio):
+        self.CashAmount = 10000
         self.status = 0
         self.EquityList = []
         self.startDate = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -45,6 +46,7 @@ class BacktestSettings:
 
     def SetCashAmount(self, amount):
         self.CashAmount = amount
+        self.Portfolio.CashAmount = amount
 
 
 

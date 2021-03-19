@@ -34,7 +34,9 @@ def get_price_history(symbol, start, end, frequencyType, periodType, frequency):
                                  end_datetime=end,
                                  need_extended_hours_data=False)
     assert r.status_code == httpx.codes.OK, r.raise_for_status()
-    return pd.DataFrame(r.json())
+    DataFrame = pd.DataFrame(r.json().get('candles'))
+    DataFrame['symbol'] = symbol
+    return DataFrame
 
 
 def get_option_chain(symbol):
