@@ -8,6 +8,8 @@ class Test(Backtester):
         self.SetStartDate(2, 21, 2021)
         self.SetEndDate(3, 17, 2021)
         self.AddEquity("AAPL", Resolution.Minute)
+        self.AddEquity("AMZN", Resolution.Minute)
+        self.AddEquity("TSLA", Resolution.Minute)
 
     def onData(self, candle):
         # Debug(candle)

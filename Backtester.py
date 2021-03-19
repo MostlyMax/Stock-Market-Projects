@@ -21,8 +21,7 @@ class Backtester(BacktestSettings):
         self.CurrentTick = 0
         self.CurrentData = {}
         self.CurrentCandle = None
-        self.Data = pd.DataFrame(index=["datetime"],
-                                 columns=["open", "high", "low", "close", "symbol"])
+        self.Data = pd.DataFrame(columns=["open", "high", "low", "close", "datetime", "symbol"])
 
     def PlaceMarketOrder(self, symbol, volume):
         price = self.CurrentCandle.Close
@@ -38,22 +37,25 @@ class Backtester(BacktestSettings):
             tempData = get_price_history(symbol=symbol["Symbol"], start=start, end=end,
                                           frequencyType=resolution["FrequencyType"],
                                           periodType=resolution["PeriodType"],
-                                          frequency=resolution["Frequency"]).set_index("datetime")
-            print(tempData)
+                                          frequency=resolution["Frequency"])
             self.Data = pd.concat([self.Data, tempData])
+            self.Data.dropna(subset=["datetime"], inplace=True)
+            self.Data.sort_values(by=["datetime"], inplace=True)
             print(self.Data)
 
     def ProcessData(self):
+        # print(self.CurrentData)
         self.CurrentCandle = Candle(Symbol=self.CurrentData.at['symbol'],
                                     High=self.CurrentData.at['high'],
                                     Low=self.CurrentData.at['low'],
                                     Open=self.CurrentData.at['open'],
                                     Close=self.CurrentData.at['close'],
-                                    Datetime=datetime.fromtimestamp(self.CurrentData.Index/1000))
+                                    Datetime=datetime.fromtimestamp(self.CurrentData.at['datetime']/1000))
 
     def Update(self):
         self.GetNextTick()
         self.ProcessData()
+
 
 
 

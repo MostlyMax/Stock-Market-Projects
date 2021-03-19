@@ -41,7 +41,7 @@ class BacktestSettings:
     def SetEndDate(self, month, day, year):
         self.endDate = datetime(year=year, month=month, day=day)
 
-    def AddEquity(self, symbol, resolution=Resolution.Minute):
+    def AddEquity(self, symbol, resolution):
         self.EquityList.append({"Symbol": symbol, "Resolution": resolution})
 
     def SetCashAmount(self, amount):
