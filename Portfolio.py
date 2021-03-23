@@ -8,6 +8,7 @@ class Portfolio:
         self.CashAmount = 100000
         self.Invested = False
         self.TotalValue = 100000
+        self.TotalProfit = 0
 
     def __getitem__(self, item):
         return self.Holding[item]
@@ -56,7 +57,11 @@ class Portfolio:
 
     def UpdatePortfolioValue(self):
         self.TotalValue = self.CashAmount
+        if self.Holding:
+            self.Invested = True
+        else:
+            self.Invested = False
         for security in self.Holding:
-            self.TotalValue += security.UnrealizedProfit
+            self.TotalValue += self.Holding[security].Price * self.Holding[security].Quantity
 
 

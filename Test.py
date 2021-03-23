@@ -29,46 +29,9 @@ class Test2(MAXAlgorithm):
         self.AddEquity("TSLA", Resolution.Minute)
 
     def onData(self, candle):
-        pass
-
-
-class stuff1:
-    def __init__(self):
-        self.listofthings = []
-        self.otherlistofthings = []
-
-    def double_everything_in_list(self):
-        for x in range(len(self.listofthings)):
-            self.listofthings[x] = self.listofthings[x] * 2
-
-class stuff2:
-    def __init__(self):
-        self.listofthings = []
-        self.otherotherlistofthings = []
-
-    def triple_everything_in_list(self):
-        for x in range(len(self.listofthings)):
-            self.listofthings[x] = self.listofthings[x] * 3
-
-class stuffs(stuff1, stuff2):
-    def __init__(self):
-        stuff1.__init__(self)
-        stuff2.__init__(self)
-        self.listofthings = []
-
-def teststuff():
-    s = stuffs()
-    s.listofthings.append(1)
-    s.listofthings.append(2)
-    s.listofthings.append(3)
-
-    s.double_everything_in_list()
-    print(s.listofthings)
-    s.otherotherlistofthings.append(420)
-    print(s.otherotherlistofthings)
-    print(s.otherlistofthings)
-
-
-
-if __name__ == '__main__':
-    teststuff()
+        if not self.Portfolio.Invested:
+            print(candle["AAPL"].Close)
+            print(candle["AMZN"].Close)
+            print(candle["TSLA"].Close)
+            self.MarketOrder("AAPL", 3)
+            Debug(self.Portfolio)

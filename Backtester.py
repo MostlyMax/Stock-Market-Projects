@@ -34,6 +34,8 @@ class Backtester:
             except Exception:
                 try:
                     self.CurrentData[ticker] = self.CurrentData[ticker]
+
+
                 except Exception:
                     self.CurrentData[ticker] = None
 
@@ -55,9 +57,9 @@ class Backtester:
         # print(self.CurrentData)
         for ticker in self.CurrentData:
             if self.CurrentData[ticker] is None:
-                self.CurrentCandle[ticker] = Candle(Symbol=ticker,
-                                                    Datetime=datetime.fromtimestamp(self.CurrentDatetime / 1000),
-                                                    HasData=False)
+                # self.CurrentCandle[ticker] = Candle(Symbol=ticker,
+                #                                     Datetime=datetime.fromtimestamp(self.CurrentDatetime / 1000),
+                #                                     HasData=False)
                 continue
 
             self.CurrentCandle[ticker] = Candle(Symbol=ticker,
@@ -83,7 +85,8 @@ class Backtester:
             self.Update()
             if all(data is None for data in self.CurrentCandle.values()):
                 continue
-            else: Test2.onData(self.Algo, self.CurrentCandle)
+            else:
+                Test2.onData(self.Algo, self.CurrentCandle)
 
 
 if __name__ == '__main__':

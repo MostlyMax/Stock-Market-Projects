@@ -34,10 +34,8 @@ class Controls:
     def FillOrder(self, order):
         order.Filled = True
         self.Transactions.append(order)
-
-        # holding = SecurityHolding(order.Ticker, order.Quantity, order.Price)
-        self.Portfolio[order.Ticker] = holding
-        self.Portfolio.CashAmount -= order.Cost
+        self.Portfolio.UpdateHolding(order)
+        self.Portfolio.UpdatePortfolioValue()
 
     def CancelOrder(self, order):
         self.Schedule.remove(order)
