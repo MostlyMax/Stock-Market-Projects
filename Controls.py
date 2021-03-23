@@ -1,6 +1,7 @@
 from Portfolio import Portfolio
 from Security import *
 
+
 class Order:
     def __init__(self, Ticker, Price, Quantity, Type, Filled=False):
         self.Ticker = Ticker
@@ -34,7 +35,7 @@ class Controls:
         order.Filled = True
         self.Transactions.append(order)
 
-        holding = SecurityHolding(order.Ticker, order.Quantity, order.Price)
+        # holding = SecurityHolding(order.Ticker, order.Quantity, order.Price)
         self.Portfolio[order.Ticker] = holding
         self.Portfolio.CashAmount -= order.Cost
 
