@@ -2,7 +2,8 @@ from datetime import datetime
 from datetime import timedelta
 from tda.client import Client
 from pprint import pprint
-import pandas as pd
+from Security import Security
+from Portfolio import Portfolio
 
 
 def Debug(*args):
@@ -30,10 +31,15 @@ class Resolution:
 class Environment:
 
     def __init__(self):
-        self.CashAmount = 10000
+        self.InitialCashAmount = 100000
         self.status = 0
         self.startDate = datetime.today() - timedelta(days=2)
         self.endDate = datetime.today() - timedelta(days=1)
+
+        self.Securities = {}
+        self.Portfolio = Portfolio()
+        self.Transactions = []
+        self.Schedule = []
 
     def SetStartDate(self, month, day, year):
         self.startDate = datetime(year=year, month=month, day=day)
@@ -42,7 +48,11 @@ class Environment:
         self.endDate = datetime(year=year, month=month, day=day)
 
     def SetCashAmount(self, amount):
-        self.CashAmount = amount
+        self.InitialCashAmount = amount
+        self.Portfolio.CashAmount = amount
+
+    def AddEquity(self, ticker, resolution=Resolution.Minute, extendedMarketHours=False):
+        self.Securities[ticker] = Security(ticker, resolution, extendedMarketHours)
 
 
 
