@@ -1,27 +1,41 @@
-from BacktestSettings import *
-from Portfolio import *
-from Backtester import *
-from Test import *
+from Environment import *
+from Security import Security
+from Order import *
 import pandas as pd
 
 
-class Algorithm:
+class MAXAlgorithm(Environment):
     def __init__(self):
-        self.Portfolio = Portfolio()
-        self.Backtest = Backtester(self.Portfolio)
+        self.Securities = {}
+        self.Portfolio = {}
+        self.Transactions = None
+        self.Schedule = None
+        Environment.__init__(self)
 
-    def Run(self):
-        self.Backtest.GetData(symbols=self.Backtest.EquityList,
-                              start=self.Backtest.startDate,
-                              end=self.Backtest.endDate)
+    def AddEquity(self, ticker, resolution=Resolution.Minute, extendedMarketHours=False):
+        self.Securities[ticker] = Security(ticker, resolution, extendedMarketHours)
 
-        while self.Backtest.CurrentTick < len(self.Backtest.Data.index):
-            self.Backtest.Update()
-            Test.onData(self.Backtest, self.Backtest.CurrentCandle)
+    def onData(self, candle):
+        pass
 
+    def initialize(self):
+        pass
 
-if __name__ == '__main__':
-    algorithm = Algorithm()
-    Test.initialize(algorithm.Backtest)
+    def PlaceMarketOrder(self):
+        pass
 
-    algorithm.Run()
+    def PlaceLimitOrder(self):
+        pass
+
+    # def __init__(self):
+    #     self.Portfolio = Portfolio()
+    #     self.Backtest = Backtester(self.Portfolio)
+
+    # def Run(self):
+    #     self.Backtest.GetData(symbols=self.Backtest.EquityList,
+    #                           start=self.Backtest.startDate,
+    #                           end=self.Backtest.endDate)
+    #
+    #     while self.Backtest.CurrentTick < len(self.Backtest.Data.index):
+    #         self.Backtest.Update()
+    #         Test.onData(self.Backtest, self.Backtest.CurrentCandle)
