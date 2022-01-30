@@ -17,7 +17,6 @@ class SecurityHolding:
         self.EntryPrice = Price
 
     def UpdateSecurityHolding(self):
-        self.Price = self.Security.Price
         self.UnrealizedProfit = (self.Price - self.EntryPrice) * self.Quantity
 
 

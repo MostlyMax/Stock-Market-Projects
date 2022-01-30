@@ -2,7 +2,15 @@ from Portfolio import Portfolio
 from Security import *
 
 
-class Order:
+class Event:
+    def CheckIfFilled(self, *args) -> bool:
+        pass
+
+    def Complete(self, *args):
+        pass
+
+
+class Order(Event):
     def __init__(self, Ticker, Price, Quantity, Type, Filled=False):
         self.Ticker = Ticker
         self.Price = Price
@@ -10,6 +18,16 @@ class Order:
         self.Filled = Filled
         self.Type = Type
         self.Cost = self.Price * self.Quantity
+
+    def CheckIfFilled(self, Candles):
+        Candle = Candles[self.Ticker]
+        if Candle.High >= self.Price >= Candle.Low:
+            return True
+        else:
+            return False
+
+    def Complete(self, Algo):
+        Algo.FillOrder(self)
 
 
 class Controls:

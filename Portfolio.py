@@ -1,6 +1,7 @@
 import pandas as pd
 from Security import SecurityHolding
 
+
 class Portfolio:
 
     def __init__(self):
@@ -29,7 +30,7 @@ class Portfolio:
         self.Holding[FilledOrder.Ticker] = holding
 
     # This is probably the messiest code in this project
-    # Couldn't think of a better way of doing this thoug...
+    # Couldn't think of a better way of doing this though...
     def UpdatePosition(self, FilledOrder):
         holding = self.Holding[FilledOrder.Ticker]
 
@@ -62,6 +63,7 @@ class Portfolio:
         else:
             self.Invested = False
         for security in self.Holding:
+
             self.TotalValue += self.Holding[security].Price * self.Holding[security].Quantity
 
 

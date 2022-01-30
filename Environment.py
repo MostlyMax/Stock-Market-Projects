@@ -6,14 +6,6 @@ from Security import Security
 from Portfolio import Portfolio
 
 
-def Debug(*args):
-    for x in args:
-        try:
-            pprint(vars(x))
-        except:
-            pprint(x)
-
-
 class Resolution:
     Minute = {"FrequencyType": Client.PriceHistory.FrequencyType.MINUTE,
               "Frequency": Client.PriceHistory.Frequency.EVERY_MINUTE,
@@ -33,13 +25,7 @@ class Environment:
     def __init__(self):
         self.InitialCashAmount = 100000
         self.status = 0
-        self.startDate = datetime.today() - timedelta(days=2)
-        self.endDate = datetime.today() - timedelta(days=1)
-
         self.Securities = {}
-        self.Portfolio = Portfolio()
-        self.Transactions = []
-        self.Schedule = []
 
     def SetStartDate(self, month, day, year):
         self.startDate = datetime(year=year, month=month, day=day)
@@ -49,9 +35,9 @@ class Environment:
 
     def SetCashAmount(self, amount):
         self.InitialCashAmount = amount
-        self.Portfolio.CashAmount = amount
 
-    def AddEquity(self, ticker, resolution=Resolution.Minute, extendedMarketHours=False):
+    def AddEquity(self, ticker, resolution=None, extendedMarketHours=False):
+        if resolution is None: resolution = Resolution.Minute
         self.Securities[ticker] = Security(ticker, resolution, extendedMarketHours)
 
 
